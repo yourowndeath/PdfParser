@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pdfHelper", "pdfHelper\pdfHelper.csproj", "{0C579BDF-A6A0-45C5-9A78-71BC1BC8CB0C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9DC4EA80-2727-4A77-9FA9-3A9E71431B26}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0C579BDF-A6A0-45C5-9A78-71BC1BC8CB0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C579BDF-A6A0-45C5-9A78-71BC1BC8CB0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C579BDF-A6A0-45C5-9A78-71BC1BC8CB0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C579BDF-A6A0-45C5-9A78-71BC1BC8CB0C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
