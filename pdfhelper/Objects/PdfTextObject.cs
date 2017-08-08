@@ -11,7 +11,7 @@ namespace pdfHelper
    {
      #region Поля
      /// <summary>Массив данных объекта</summary>
-     private static byte[] _ObjectBytes;
+     private static byte[] _objectBytes;
 
      /// <summary>Имя шрифта в формате pdf</summary>
      public static string FontName { get; private set; }
@@ -29,8 +29,8 @@ namespace pdfHelper
      /// <param name="inBytes">Массив байт текстового объекта.</param>
      public PdfTextObject(byte[] inBytes)
      {
-       _ObjectBytes = inBytes;
-       var str = PdfFunctions.ConvertByteToString(_ObjectBytes);
+       _objectBytes = inBytes;
+       var str = PdfFunctions.ConvertByteToString(_objectBytes);
        Parse();
      }
      #endregion
@@ -40,14 +40,14 @@ namespace pdfHelper
      private void Parse()
      {
        int position;
-       var font = PdfFunctions.GetTextAttribute(_ObjectBytes, 0, PdfConsts.PDF_TEXT_FONT, out position);
+       var font = PdfFunctions.GetTextAttribute(_objectBytes, 0, PdfConsts.PDF_TEXT_FONT, out position);
        if (!String.IsNullOrEmpty(font))
          FillTextParameters(font);
        string text;
        position = 0;
        do
        {
-         text = PdfFunctions.GetTextAttribute(_ObjectBytes, position, PdfConsts.PDF_TEXT_PLAIN, out position);
+         text = PdfFunctions.GetTextAttribute(_objectBytes, position, PdfConsts.PDF_TEXT_PLAIN, out position);
          if (!String.IsNullOrEmpty(text))
            AddPlainText(text);
        }
@@ -55,7 +55,7 @@ namespace pdfHelper
        position = 0;
        do
        {
-         text = PdfFunctions.GetTextAttribute(_ObjectBytes, position, PdfConsts.PDF_TEXT_ASSEMBLY, out position);
+         text = PdfFunctions.GetTextAttribute(_objectBytes, position, PdfConsts.PDF_TEXT_ASSEMBLY, out position);
          if (!String.IsNullOrEmpty(text))
            AddAssemblyText(text);
        }
@@ -90,11 +90,10 @@ namespace pdfHelper
       var endPos = value.IndexOf(">", StringComparison.Ordinal);
       var res = endPos == -1 ? value.Substring(startPos) : value.Substring(startPos + 1, endPos - startPos - 1);
       var i = 0;
-      var current = "";
       var outValue = "";
       while( i < res.Length )
       {
-        current = res.Substring(i, 2);
+        var current = res.Substring(i, 2);
         outValue += (char)Int32.Parse(current, System.Globalization.NumberStyles.HexNumber);
         i += 2;
       }

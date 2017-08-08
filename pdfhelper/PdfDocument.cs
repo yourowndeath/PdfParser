@@ -11,13 +11,13 @@ namespace pdfHelper
   {
     #region Поля
     /// <summary>Массив байт документа</summary>
-    private static byte[] _DocumentBytes;
+    private static byte[] _documentBytes;
 
     /// <summary>Страницы Pdf документа</summary>
     public static List<PdfPage> Pages=new List<PdfPage>();
 
     /// <summary>Список объектов документа</summary>
-    private static readonly List<PdfObject> _Objects = new List<PdfObject>();
+    private static readonly List<PdfObject> Objects = new List<PdfObject>();
 
     /// <summary>Версия Pdf-документа</summary>
     public static decimal Version { get; private set; }
@@ -31,15 +31,15 @@ namespace pdfHelper
     public PdfDocument(string fileName)
     {
       //Если файла нет выдаем ошибку
-      if (String.IsNullOrEmpty(fileName) || !File.Exists(fileName))
-        throw new ArgumentNullException(String.Format(PdfConsts.MSG_FILE_NOT_FOUND, fileName));
+      if (string.IsNullOrEmpty(fileName) || !File.Exists(fileName))
+        throw new ArgumentNullException(string.Format(PdfConsts.MSG_FILE_NOT_FOUND, fileName));
       var ext=Path.GetExtension(fileName);
       
       //Пустое разрешение или не pdf
-      if (String.IsNullOrEmpty(ext)||!ext.Equals(PdfConsts.PDF_EXTENSION))
+      if (string.IsNullOrEmpty(ext)||!ext.Equals(PdfConsts.PDF_EXTENSION))
         throw new ArgumentException(PdfConsts.MSG_FILE_WRONG_FORMAT);
 
-      _DocumentBytes = File.ReadAllBytes(fileName);
+      _documentBytes = File.ReadAllBytes(fileName);
       Parse();
     }
 
@@ -49,7 +49,7 @@ namespace pdfHelper
     {
       if (inArray==null)
         throw new ArgumentNullException(PdfConsts.MSG_EMPTY_ARRAY);
-      _DocumentBytes = inArray;
+      _documentBytes = inArray;
       Parse();
     }
     #endregion
@@ -65,28 +65,28 @@ namespace pdfHelper
     /// <summary>Заполняет список объектов документа</summary>
     private static void FillObjects()
     {
-      var position = PdfFunctions.GetPosition(_DocumentBytes, 0, PdfConsts.PDF_TRAILER);
-      position = PdfFunctions.GetPosition(_DocumentBytes, position, PdfConsts.PDF_SIZE) + 1;
-      var current = (char)_DocumentBytes[position];
+      var position = PdfFunctions.GetPosition(_documentBytes, 0, PdfConsts.PDF_TRAILER);
+      position = PdfFunctions.GetPosition(_documentBytes, position, PdfConsts.PDF_SIZE) + 1;
+      var current = (char)_documentBytes[position];
       var value = "";
       while (current != PdfConsts.PDF_BACKSLASH)
       {
         value += current;
         position++;
-        current = (char)_DocumentBytes[position];
+        current = (char)_documentBytes[position];
       }
       var objCount = Convert.ToInt32(value);
       for (var i = 1; i < objCount; i++)
       {
         var name = i.ToString(CultureInfo.InvariantCulture) + " 0 " + PdfConsts.PDF_OBJECT;
-        var data = PdfFunctions.GetObjectData(_DocumentBytes, 0, name);
+        var data = PdfFunctions.GetObjectData(_documentBytes, 0, name);
         if (data != null)
         {
           var type = GetObjectType(data);
           if (type == PdfObjectType.Page)
             Pages.Add(new PdfPage(name, data));
           else
-            _Objects.Add(new PdfObject(name, data, type));
+            Objects.Add(new PdfObject(name, data, type));
         }
       }
     }
@@ -99,6 +99,7 @@ namespace pdfHelper
       var position = PdfFunctions.GetPosition(inBytes, 0, PdfConsts.PDF_TYPE);
       if( position == -1 )
         return PdfObjectType.Undefine;
+
       position += 2;
       var current = (char)inBytes[position];
       var value = "";
@@ -116,16 +117,16 @@ namespace pdfHelper
     /// <returns>Версия pdf-документа</returns>
     private static decimal GetVersion()
     {
-      var pos = PdfFunctions.GetPosition(_DocumentBytes, 0, PdfConsts.PDF_VERSION) + 1;
+      var pos = PdfFunctions.GetPosition(_documentBytes, 0, PdfConsts.PDF_VERSION) + 1;
       if (pos == -1)
         return 0;
-      var res = (char)_DocumentBytes[pos];
+      var res = (char)_documentBytes[pos];
       var value = "";
       while (res != 13)
       {
         value += res;
         pos++;
-        res = (char)_DocumentBytes[pos];
+        res = (char)_documentBytes[pos];
       }
       return Convert.ToDecimal(value, CultureInfo.InvariantCulture);
     }
@@ -133,7 +134,7 @@ namespace pdfHelper
     /// <summary>Возвращает текст pdf документа</summary>
     public  string GetPdfText()
     {
-      return ( from obj in _Objects from text in obj.TextObjects from line in text.TextLines select line ).Aggregate("", ( current, line ) => current + line);
+      return ( from obj in Objects from text in obj.TextObjects from line in text.TextLines select line ).Aggregate("", ( current, line ) => current + line);
     }
 
     #endregion

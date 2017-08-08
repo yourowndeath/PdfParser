@@ -33,6 +33,7 @@ namespace pdfHelper
       //Если файла нет выдаем ошибку
       if (String.IsNullOrEmpty(fileName) || !File.Exists(fileName))
         throw new ArgumentNullException(String.Format(PdfConsts.MSG_FILE_NOT_FOUND,fileName));
+
       //получаем бинарный файл pdf
       var pdfFile = File.ReadAllBytes(fileName);
       var i = 0;
@@ -176,7 +177,7 @@ namespace pdfHelper
       var endIndex = beginIndex;
       var current = (char)inBytes[beginIndex];
       var value = "";
-      while( current != 10 )
+      while( current != 10 && endIndex!=0 )
       {
         endIndex--;
         current = (char)inBytes[endIndex];

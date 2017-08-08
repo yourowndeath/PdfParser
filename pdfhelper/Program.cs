@@ -2,10 +2,10 @@
 {
   class Program
   {
-    private const string TEST_FILE = "test5.pdf";
+      private const string TestFile = "programming_in_scala_2nd.pdf";
     static void Main()
     {
-      var document = new PdfDocument(TEST_FILE);
+      var document = new PdfDocument(TestFile);
       document.GetPdfText();
     }
   }
