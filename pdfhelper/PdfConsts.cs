@@ -88,6 +88,8 @@
     #endregion
 
     #region Служебные символы
+
+      public const int PDF_RETURN = 13;
     /// <summary>Пробел</summary>
     public const int PDF_SPACE = 32;
 
