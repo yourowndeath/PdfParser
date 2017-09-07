@@ -123,7 +123,7 @@ namespace pdfHelper
         /// <returns></returns>
         public static int GetPosition(byte[] buffer, int startIndex, byte[] inBytes)
         {
-            for (int i = startIndex; i < buffer.Length; i++)
+            for (var i = startIndex; i < buffer.Length; i++)
             {
                 if (buffer[i] == inBytes[0])
                 {
